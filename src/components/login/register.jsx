@@ -5,10 +5,13 @@ import Button from '@mui/material/Button';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import {Navigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import axios from 'axios'
 
 function Register(props){
   
   const [email, setEmail] = useState('')
+   const [firstname, setFirstname] = useState('')
+   const [lastname, setLastname] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
  
@@ -26,7 +29,26 @@ function Register(props){
 
   const handleSubmit =(e)=>{
     e.preventDefault();
+
+      // login user here
+    const endpoint = `https://Jeremserver.jeanpierre34.repl.co/users/register`
+
+    axios({
+      url:endpoint,
+      method:"post",
+      data:{email, password, last_name:lastname, first_name:firstname}
+    }).then((response)=>{
+      if(response.data.message ==='Registered'){
+        setRedirect(true); 
+        
+        
+      }
+    }).
+      catch((e)=>console.log(e))
   }
+   // navigate to dashboard
+  if(redirect) return <Navigate to='/login'/>
+  
   return (
    <div className="wrapper register">
 			<div className="container">
@@ -43,16 +65,16 @@ function Register(props){
 								label="First Name"
 								variant="outlined"
                 fullWidth
-                 onChange={(e)=>setEmail(e.currentTarget.value)}
-                value={email}
+                 onChange={(e)=>setFirstname(e.currentTarget.value)}
+                value={firstname}
 							/></div>
                   <div className='flex-grow-1 me-1'>  <TextField
 								id="outlined-basic"
 								label="Last Name"
 								variant="outlined"
                 fullWidth
-                 onChange={(e)=>setEmail(e.currentTarget.value)}
-                value={email}
+                 onChange={(e)=>setLastname(e.currentTarget.value)}
+                value={lastname}
 							/></div>
                 
                 </div>
@@ -71,6 +93,7 @@ function Register(props){
 
               <div className='mt-2'>
                 <TextField
+                  type='password'
                 onChange={(e)=>setPassword(e.currentTarget.value)}
 								id="outlined-basic"
 								label="Password"
@@ -84,11 +107,12 @@ function Register(props){
 							<Button
                 elevation={0}
                 type='submit'
-                fullWidth variant='outlined'>Login</Button></div>
+                fullWidth variant='outlined'>Register</Button></div>
 							
 			
 
               </form>
+            
 					</div>
 				</div>
 			</div>

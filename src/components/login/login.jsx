@@ -4,12 +4,20 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import {Navigate} from 'react-router-dom';
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import {login} from "../../store/features/login/loginSlice"
+import { useSelector, useDispatch } from 'react-redux'
 
 export default  function Login(props) {  
+  //const user = useSelector(state => state.login.user)
+  const dispatch = useDispatch();
+  
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
+ 
  
 
    useEffect(  async ()=>{
@@ -26,16 +34,39 @@ export default  function Login(props) {
   const handleSubmit =(e)=>{
   
     e.preventDefault();
+   
+   
+   // console.log(dispatch)
 
     // login user here
-    
+    const endpoint = `https://Jeremserver.jeanpierre34.repl.co/users/login`
 
-    // redirect to dashaboard
-    setRedirect((prevState) =>true)
+    axios({
+      url:endpoint,
+      method:"post",
+      data:{email, password},
+     
+    }).then((response)=>{
+      console.log(response)
+      if(response.data.success){
+        toast.success("Logged in");
+         dispatch( login(response.data.user));
+        // save user data to local storage
+        localStorage.setItem('user',JSON.stringify(response.data.user));
+        
+        
+        setRedirect(true);
+      }
+      else{
+         toast.error(response.data.message);
+      }
+    }).
+      catch((e)=>console.log(e))
+  
     
   }
   // navigate to dashboard
-  if(redirect) return <Navigate to='/dashboard'/>
+  if(redirect || props.user) return <Navigate to='/dashboard'/>
 
  
   
@@ -67,6 +98,7 @@ export default  function Login(props) {
 								variant="outlined"
                 fullWidth
                 value={password}
+                  type='password'
 							/>
               
               </div>

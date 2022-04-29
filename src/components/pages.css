@@ -11,6 +11,13 @@
 }
 .login{
   background:white;
+  display:flex;
+  align-items:center;
+}
+.register{
+  background:white;
+  display:flex;
+  align-items:center;
 }
 .feature-icon {
   color: #31567b;

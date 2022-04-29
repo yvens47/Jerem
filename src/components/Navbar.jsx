@@ -17,6 +17,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import { red, green, blue } from '@mui/material/colors';
+
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -28,10 +31,12 @@ const Search = styled('div')(({ theme }) => ({
 	marginRight: theme.spacing(2),
 	marginLeft: 0,
 	width: '100%',
-	[theme.breakpoints.up('sm')]: {
-		marginLeft: theme.spacing(3),
-		width: 'auto'
-	}
+	// [theme.breakpoints.up('sm')]: {
+	// 	marginLeft: theme.spacing(3),
+	// 	width: 'auto'
+	// },
+ 
+  
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -99,9 +104,10 @@ export default function Navbar(props) {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-			<MenuItem onClick={handleMenuClose}>Transactions</MenuItem>
+			<MenuItem href='/dashboard/settings' component='a' onClick={handleMenuClose}>Profile</MenuItem>
+			<MenuItem href='/dashboard' component='a' onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem href='/dashboard/transactions' component='a' onClick={handleMenuClose}>Transactions</MenuItem>
+      <MenuItem onClick={props.logout}>Logout</MenuItem>
 		</Menu>
 	);
 
@@ -150,7 +156,8 @@ export default function Navbar(props) {
 					aria-haspopup="true"
 					color="inherit"
 				>
-					<AccountCircle />
+          {/*<AccountCircle />*/}
+          <Avatar>JP</Avatar>
 				</IconButton>
 				<p>Profile</p>
 			</MenuItem>
@@ -158,8 +165,8 @@ export default function Navbar(props) {
 	);
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static" elevation={0}>
+		<Box sx={{ flexGrow: 1,width: '100%', background:"green"  }}>
+			<AppBar position="fixed" elevation={0}>
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -219,7 +226,8 @@ export default function Navbar(props) {
 								onClick={handleProfileMenuOpen}
 								color="inherit"
 							>
-								<AccountCircle />
+								{/*<AccountCircle />*/}
+          <Avatar sx={{backgroundColor:"#2f2e41"}}>JP</Avatar>
 							</IconButton>
 						) : (
       <><Button href='/login' className='me-2 ' color="inherit">Login</Button>
